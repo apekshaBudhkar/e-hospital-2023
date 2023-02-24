@@ -2050,7 +2050,7 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
                             <form 
                             aria-live="polite"
                             data-ux="Form"
-                            action="/submit-brain"
+                            action="/recordUpdate"
                             method="post"
                             class="x-el x-el-form c1-1 c1-2 c1-2f c1-b c1-c c1-d c1-e c1-f c1-g"
                             enctype="multipart/form-data"
@@ -2119,34 +2119,33 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
                               <!--disease type-->
                               <label for="disease type">disease type:</label>
                               <div class="dropdown">
-                                 <!--<h3>Dropdown Heading</h3>-->
-                                <select>
+
+                                <select name="diseaseType">
                                   <option value="option1" selected disabled>Select a disease type</option>
-                                  <option value="option1">glioma</option>
+                                  <option value="Glioma">Glioma</option>
+                                  <option value="Pneumonia">Pneumonia</option>
                                 </select>
                               </div>
                               <br>
-                              <!--test type-->
+
                               <label for="test type">test type:</label>
                               <div class="dropdown">                                
-                                <!--<h3>Dropdown Heading</h3>-->
-                               <select>
-                                 <option value="" selected disabled>Select a disease type</option>
-                                 <option value="option1">test 1</option>
-                                 <option value="option2">test 2</option>
-                                 <option value="option3">test 3</option>
-                               </select>
+                                <select id="testType" name="testType" required> 
+                                  <option value="">-- Select Test Type --</option> 
+                                  <option value="X-ray">X-ray</option>   
+                                  <option value="MRI">MRI</option>      
+                                  <option value="CT-scan">CT-scan</option>
                              </div>
                              <br>
                     
                              <!--test date-->
                              <div class="form-group">
-                              <label for="myDate">Select the date of the test:</label>
+                              <label for="date">Select the date of the test:</label>
                               <div class="input-group">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                                 </div>
-                                <input type="date" class="form-control" id="myDate" name="myDate">
+                                <input type="date" class="form-control" id="date" name="date">
                               </div>
                               </div> 
 

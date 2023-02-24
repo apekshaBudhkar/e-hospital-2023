@@ -8,23 +8,16 @@ const mongoClient = require('./dbConnection/mongodbConnection');
 const mongoDb = mongoClient.getDb();
 const body_parse = require('body-parser');
 const app = express();
-
-const storage = multer.diskStorage({
-  destination: 'uploads/',
-  filename: (req, file, cb) => {
-    cb(null, `${file.originalname}`);
-  }
-});
-
-const upload = multer({ storage });
+const upload = multer();
 const port = process.env.PORT || 5000;
+
+
 var sql = '';
 var crypto = require('crypto')
 
 app.use(body_parse.json());
 app.set('view engine', 'ejs')
 app.use(express.static(__dirname + '/public'))
-app.use('/uploads', express.static('uploads'));
 app.use(express.urlencoded({ extended: true }));
 // mongoClient.connectToServer();
 
@@ -136,10 +129,6 @@ app.get('/contact-us', (req, res) => {
   res.render("pages/contact-us");
 });
 
-app.get('/brain', (req, res) => {
-  res.render("pages/brain");
-});
-
 app.post('/send-contact-form', (req, res) => {
 
   // Define mandatory parameters
@@ -149,7 +138,8 @@ app.post('/send-contact-form', (req, res) => {
   const RECEIVER_EMAIL = req.body.userEmail;
   const USER_MESSAGE = req.body.userMessage;
 
-  let VALID_INPUTS = true;
+  var VALID_INPUTS = true;
+
 
   if(Boolean(!RECEIVER_NAME)||Boolean(!RECEIVER_EMAIL)||Boolean(!USER_MESSAGE)){
     VALID_INPUTS = false;
@@ -213,26 +203,6 @@ app.post('/send-contact-form', (req, res) => {
     );
 
   }
-})
-
-app.post('/submit-brain', upload.single('image'), (req, res) => {
-  const PATIENT_FIRST_NAME = req.body.firstName;
-  const PATIENT_LAST_NAME = req.body.lastName;
-  const PATIENT_EMAIL = req.body.email;
-  const IMAGE = req.body.image;
-  
-  console.log(`${req.file.filename}`);
-  // res.write(`Thank you for your submission ${PATIENT_FIRST_NAME}, ${PATIENT_LAST_NAME},
-  // ${PATIENT_EMAIL}`);
-  
-  // res.send(`/uploads/${req.file.filename}`);
-  res.render('pages/submit-brain');
-  // res.write(`
-  // <script>
-  //   window.location.href = "/brain-result";
-  // </script>`
-  // );
-
 })
 
 app.post('/Hospital_DashBoard', (req, res) => { // For the Admin Credentials:  (Admin , Admin)
@@ -385,6 +355,10 @@ app.post('/get_doctorInfo', (req, res) => {
     })
 })
 
+app.get('/brain', (req, res) => {
+  res.render("pages/brain");
+})
+
 app.post('/recordUpdate', upload.single("image"), (req,res) => {
   // console.log(req.file);
   // console.log(req.body);
@@ -455,6 +429,10 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
     // Send data to external api
     const form = new FormData();
     const file = req.file;
+    console.log(file.buffer);
+    console.log(file.originalname);
+
+  
     form.append('image', file.buffer, file.originalname);
     form.append('diseaseType', diseaseType);
     form.append('testType', testType);
@@ -464,7 +442,7 @@ app.post('/recordUpdate', upload.single("image"), (req,res) => {
         console.log(`Status: ${response.status}`)
         // const result = await mongoDb.collection("test").insertOne(req.file);
         // console.log(`New image created with the following id: ${result.insertedId}`);
-        res.send({message: response.data});
+        res.send(response.data);
       })
       .catch(err => {
         console.error(err)
@@ -478,7 +456,7 @@ app.post('/connectionTesting', upload.single("image"), (req,res) => {
   console.log("Request receive.");
   console.log(req.file);
   console.log(req.body);
-  res.send("Request received by test api.");
+  res.send({result: "Request received by test api."});
 })
 
 app.post('/Hospital', (req, res) => {
