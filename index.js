@@ -354,6 +354,9 @@ app.get('/about', (req, res) => {
 app.get('/Contact', (req, res) => {
   res.render("pages/contact-us");
 })
+app.get('/emergency-locations', (req, res) => {
+  res.render("pages/emergency-locations");
+})
 app.get('/thankyou', (req, res) => {
   res.render("pages/thankyou");
 })
